@@ -36,9 +36,9 @@ const setCookies = (res, accessToken, refreshToken) => {
 };
 
 const signup = AsyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
-
   try {
+    const { name, email, password } = req.body;
+
     if ([name, email, password].some((field) => field?.trim() === "")) {
       throw new ApiError(400, "All fiels are requires");
     }
@@ -63,17 +63,89 @@ const signup = AsyncHandler(async (req, res) => {
 
     setCookies(res, accessToken, refreshToken);
 
-    const createdUser = await User
-      .findById(user._id)
-      .select("-password -refreshToken");
+    const createdUser = await User.findById(user._id).select(
+      "-password -refreshToken"
+    );
 
-    res.status(200).json(new ApiResponse(200,createdUser,"User created successfully"));
+    res
+      .status(200)
+      .json(new ApiResponse(200, createdUser, "User created successfully"));
   } catch (error) {
     throw new ApiError(400, error.message);
   }
 });
 
+const login = AsyncHandler(async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
+    if ([email, password].some((field) => field?.trim() === "")) {
+      throw new ApiError(400, "All fields are required");
+    }
 
+    const user = await User.findOne({ email });
 
-export {signup}
+    if (!user) {
+      throw new ApiError(400, "User not found");
+    }
+
+    const validUser = await user.comparePassword(password);
+
+    if (!validUser) {
+      throw new ApiError(400, "Invalid credentials");
+    }
+
+    const { accessToken, refreshToken } = generateTokens(user._id);
+
+    setCookies(res, accessToken, refreshToken);
+
+    const loggedUser = await User.findById(user._id).select(
+      "-password -refreshToken"
+    );
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, loggedUser, "User logged in successfully"));
+  } catch (error) {
+    console.log(error.message);
+    throw new ApiError(400, "Unable to login");
+  }
+});
+
+const logout = AsyncHandler(async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    throw new ApiError(400, "No refresh token found");
+  }
+
+  const decodedToken = jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET
+  );
+
+  const user = await User.findByIdAndUpdate(
+    decodedToken.userId,
+    {
+      $unset: {
+        refreshToken: 1,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  
+  }
+
+  res.status(200)
+  .clearCookie("accessToken",options)
+  .clearCookie("refreshToken",options)
+  .json(new ApiResponse(200, user, "User logged out successfully"));
+});
+
+export { signup, login, logout };

@@ -48,21 +48,17 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-export const User = mongoose.model("User", userSchema);
-
 userSchema.pre("save", async function (next) {
-  try {
-    if (!this.isModified("password")) return next();
-
-    const password = await bcrypt.hash(this.password, 10);
-
-    this.password = password;
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
     next();
-  } catch (error) {
-    next(error.message);
+  } else {
+    return next();
   }
 });
 
 userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
+
+export const User = mongoose.model("User", userSchema);
