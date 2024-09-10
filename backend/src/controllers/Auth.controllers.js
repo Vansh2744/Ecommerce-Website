@@ -148,4 +148,18 @@ const logout = AsyncHandler(async (req, res) => {
   .json(new ApiResponse(200, user, "User logged out successfully"));
 });
 
-export { signup, login, logout };
+const getProfile = AsyncHandler(async(req,res)=>{
+  try {
+    const user = await User.findById(req.user._id).select("-password -refreshToken");
+
+    if(!user){
+      throw new ApiError(400,"Unable to get profile");
+    }
+
+    res.status(200).json(new ApiResponse(200,user,"Profile fetched successfully"));
+  } catch (error) {
+    throw new ApiError(400,"Unable to get profile");
+  }
+})
+
+export { signup, login, logout, getProfile };

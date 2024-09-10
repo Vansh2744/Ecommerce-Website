@@ -24,7 +24,11 @@ const productSchema = new Schema(
       min: 0,
       max: 100,
     },
-    isWhislisted: {
+    category: {
+      type: String,
+      required: true,
+    },
+    isWishlisted: {
       type: Boolean,
       default: false,
     },
