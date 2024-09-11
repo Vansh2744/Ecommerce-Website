@@ -115,10 +115,6 @@ const getProductByCategory = AsyncHandler(async (req,res)=>{
 const deleteProduct = AsyncHandler(async (req,res)=>{
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
-
-    // const publicId = product.image.split("/").pop().split(".")[0];
-    // console.log(publicId);
-    
      
     res.status(200).json(new ApiResponse(200, product, "Product deleted successfully"));
   } catch (error) {
