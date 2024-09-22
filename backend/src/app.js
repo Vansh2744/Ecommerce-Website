@@ -1,6 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import path from "path";
+import cors from "cors";
 
 export const app = express();
 
@@ -8,6 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
 app.use(express.static("public"));
+app.use(cors());
 
 // Routes
 
