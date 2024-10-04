@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+
 const categories = [
   "jeans.jpg",
   "/tshirts.jpg",
@@ -23,6 +24,7 @@ const cargos = [
 
 const shoes=["shoes1.jpg","shoes2.jpg","shoes3.jpg","shoes4.jpg","shoes5.jpg","shoes6.jpg"]
 function HomePage() {
+
   return (
     <>
       <div className="grid grid-cols-3 gap-8 m-16 mt-40">
@@ -30,7 +32,7 @@ function HomePage() {
           return (
             <>
               <div key={image} className="shadow-lg shadow-gray-800">
-                <Link to="/image">
+                <Link to="/products">
                   <img src={image} className="h-96 w-full" />
                 </Link>
               </div>
@@ -40,7 +42,7 @@ function HomePage() {
       </div>
 
       <div className="w-full pl-20 pr-20">
-        <Link to="/image">
+        <Link to="/products">
           <img
             src="sale.jpg"
             className="w-full h-96 shadow-2xl shadow-gray-700"
@@ -55,7 +57,7 @@ function HomePage() {
           return (
             <>
               <div key={cargo} className="w-60 h-80 rounded-2xl shadow-md shadow-gray-700">
-                <Link to="/image">
+                <Link to="/products">
                   <img src={cargo} className="w-full h-full rounded-2xl" />
                 </Link>
               </div>
@@ -69,7 +71,7 @@ function HomePage() {
           return (
             <>
               <div key={shoe} className="w-60 h-80 rounded-2xl shadow-md shadow-gray-700">
-                <Link to="/image">
+                <Link to="/products">
                   <img src={shoe} className="w-full h-full rounded-2xl" />
                 </Link>
               </div>

@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Mail, Lock } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { UserContext } from "../context/UserContext";
+
+
+
 
 function LoginPage() {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
+  const {setCustomer} = useContext(UserContext);
 
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -21,14 +29,20 @@ function LoginPage() {
         email: user.email,
         password: user.password,
       });
+
+      const curr = await axios.get("/api/v1/user/getProfile");
+      setCustomer(curr.data.data);
+      console.log("Data :",curr);
+      
       console.log(res);
       toast.success(res.data.message);
+      navigate("/");
     } catch (error) {
       toast.error("Something went wrong");
       console.log(error.message);
-      
     }
   };
+
 
   return (
     <div className="mt-40 flex items-center justify-center">

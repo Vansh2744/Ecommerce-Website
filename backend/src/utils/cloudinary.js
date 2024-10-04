@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+import fs from "fs/promises"; // Use async version of fs
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -7,15 +7,22 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
+// Upload to Cloudinary and remove the local file after the operation
 export const uploadCloudinary = async (file) => {
-  try {    
+  try {
     const uploadResult = await cloudinary.uploader.upload(file, {
-      resource_type: "auto",
+      resource_type: "auto", // Handles any type of file (image, video, etc.)
     });
-    fs.unlinkSync(file);
-    return uploadResult;
+
+    return uploadResult; // Successfully return Cloudinary response
   } catch (error) {
-    fs.unlinkSync(file);
-    throw new ApiError(400, "Unable to upload image file");
+    throw new ApiError(400, "Unable to upload image file"); // Custom error for upload failure
+  } finally {
+    // Always attempt to delete the file, whether the upload succeeded or failed
+    try {
+      await fs.unlink(file);
+    } catch (unlinkError) {
+      console.error(`Failed to delete file: ${file}`, unlinkError);
+    }
   }
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { User, Mail, Lock } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
@@ -10,6 +10,8 @@ function SignupPage() {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -26,9 +28,9 @@ function SignupPage() {
       });
       console.log(res);
       toast.success(res.data.message);
+      navigate("/login");
     } catch (error) {
       console.log(error);
-      
       toast.error("Something went wrong");
     }
   };
@@ -85,7 +87,7 @@ function SignupPage() {
 
         <p>
           Already have an account?{" "}
-          <Link to="/login" className="text-red-500 font-semibold">
+          <Link to="/" className="text-red-500 font-semibold">
             login
           </Link>
         </p>

@@ -16,13 +16,22 @@ const createProducts = AsyncHandler(async (req, res) => {
       throw new ApiError(400, "All fields are required");
     }
 
+     if (!req.file) {
+       throw new ApiError(400, "No image uploaded");
+     }
+
     const imagePath = req.file?.path;
+    
 
     if (!imagePath) {
       throw new ApiError(400, "Unable to get Image Path");
     }
 
     const image = await uploadCloudinary(imagePath);
+
+    if (!image || !image.url) {
+      throw new ApiError(500, "Image upload to Cloudinary failed");
+    }
 
     const product = await Product.create({
       name,
@@ -123,11 +132,27 @@ const deleteProduct = AsyncHandler(async (req,res)=>{
   }
 })
 
+const getProductById = AsyncHandler(async(req,res)=>{
+  try {
+    const products = await Product.findById(req.params.id);
+
+    if(!products){
+      throw new ApiError(400, "Product not found using the id in params");
+    }
+
+    res.status(200).json(new ApiResponse(200, products, "Product found successfully"));
+
+  } catch (error) {
+    throw new ApiError(404, "Product not found");
+  }
+})
+
 export {
   createProducts,
   getAllProducts,
   toggleIsWishlisted,
   getWishlistedProducts,
   deleteProduct,
-  getProductByCategory
+  getProductByCategory,
+  getProductById
 };
