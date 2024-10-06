@@ -14,29 +14,18 @@ import { Toaster } from "react-hot-toast";
 import { UserContext } from "../context/UserContext";
 import { CategoryContext } from "../context/CategoryContext";
 
-
-
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
 
   const navigate = useNavigate();
 
-  const {customer, setCustomer} = useContext(UserContext);
-  const {setCategory} = useContext(CategoryContext);
+  const { customer, setCustomer } = useContext(UserContext);
+  const { setCategory } = useContext(CategoryContext);
 
-  const handleProfile = () => {
-    setOpen((prev)=>!prev);
-  };
+  const user = customer.role === "customer";
+  const admin = customer.role === "admin";
 
-  const handleCategory = () => {
-    setOpenCat((prev)=>!prev);
-  };
-
-const user = customer.role === "customer";
-const admin = customer.role === "admin";
-
-  
   const handleLogout = () => {
     axios
       .post("/api/v1/user/logout")
@@ -47,16 +36,16 @@ const admin = customer.role === "admin";
         console.log(error.message);
       });
 
-      setCustomer("");
-      setOpen(false);
-    
+    setCustomer("");
+    setOpen(false);
+
     navigate("/login");
   };
 
-  const handleFashionToggle = ()=>{
+  const handleFashionToggle = () => {
     setCategory("Fashion");
     setOpenCat(false);
-  }
+  };
 
   const handleSportsToggle = () => {
     setCategory("Sports");
@@ -67,7 +56,6 @@ const admin = customer.role === "admin";
     setCategory("Electronics");
     setOpenCat(false);
   };
-
 
   return (
     <div className="relative">
@@ -88,14 +76,18 @@ const admin = customer.role === "admin";
           </Link>
           <button
             className="flex flex-col justify-center items-center hover:text-orange-600 font-bold"
-            onClick={handleCategory}>
+            onMouseEnter={() => setOpenCat(true)}
+            onMouseLeave={() => setOpenCat(false)}>
             <Logs />
             <span>Categories</span>
           </button>
 
           {openCat ? (
             <>
-              <div className="absolute top-24 right-52 flex flex-col w-60 bg-slate-500 gap-1 p-1">
+              <div
+                className="absolute top-[70px] right-52 flex flex-col w-60 bg-slate-500 gap-1 p-1"
+                onMouseEnter={() => setOpenCat(true)}
+                onMouseLeave={() => setOpenCat(false)}>
                 <>
                   <Link
                     to="/category"
@@ -155,7 +147,8 @@ const admin = customer.role === "admin";
             <>
               <button
                 className="flex flex-col justify-center items-center hover:text-orange-600 font-bold"
-                onClick={handleProfile}>
+                onMouseEnter={() => setOpen(true)}
+                onMouseLeave={() => setOpen(false)}>
                 <UserPen />
                 <span>Profile</span>
               </button>
@@ -178,7 +171,10 @@ const admin = customer.role === "admin";
 
           {open ? (
             <>
-              <div className="absolute top-24 right-0 flex flex-col w-60 bg-slate-500 gap-1 p-1">
+              <div
+                className="absolute top-[70px] right-0 flex flex-col w-60 bg-slate-500 gap-1 p-1"
+                onMouseEnter={() => setOpen(true)}
+                onMouseLeave={() => setOpen(false)}>
                 <div className="flex flex-col justify-center items-center gap-2 mb-8 mt-4">
                   <img
                     src="profilepic/profile.jpg"
@@ -189,14 +185,14 @@ const admin = customer.role === "admin";
                 </div>
                 {user ? (
                   <>
-                    <button className="bg-slate-400">Wishlist</button>
-                    <button className="bg-slate-400">Cart</button>
-                    <button className="bg-slate-400">Orders</button>
+                    <Link to="/wishlist" className="bg-slate-400" onClick={()=>setOpen(false)}>Wishlist</Link>
+                    <Link to="/cart" className="bg-slate-400" onClick={()=>setOpen(false)}>Cart</Link>
+                    <Link className="bg-slate-400">Orders</Link>
                   </>
                 ) : (
                   ""
                 )}
-                <button className="bg-slate-400">Coupons</button>
+                <Link className="bg-slate-400">Coupons</Link>
                 <button
                   className="bg-orange-400 hover:bg-orange-500"
                   onClick={handleLogout}>
