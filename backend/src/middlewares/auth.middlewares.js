@@ -2,12 +2,14 @@ import ApiError from "../utils/ApiError.js";
 import { User } from "../models/users.models.js";
 import jwt from "jsonwebtoken";
 
-const protectRoute = async (req, _, next) => {
+const protectRoute = async (req, res, next) => {
   try {
     const accessToken = req.cookies.accessToken;
 
     if (!accessToken) {
-      throw new ApiError(400, "No access token found");
+      return res
+        .status(401)
+        .json({ message: "Unauthorized - No access token provided" });
     }
 
     const decodedToken = jwt.verify(

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 
+
 const categories = [
   "jeans.jpg",
   "/tshirts.jpg",
@@ -24,7 +25,6 @@ const cargos = [
 
 const shoes=["shoes1.jpg","shoes2.jpg","shoes3.jpg","shoes4.jpg","shoes5.jpg","shoes6.jpg"]
 function HomePage() {
-
   return (
     <>
       <div className="grid grid-cols-3 gap-8 m-16 mt-40">

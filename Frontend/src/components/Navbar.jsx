@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import {
   House,
@@ -13,30 +13,41 @@ import {
 import { Toaster } from "react-hot-toast";
 import { UserContext } from "../context/UserContext";
 import { CategoryContext } from "../context/CategoryContext";
+import { toast } from "react-hot-toast";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
+  const [client, setClient] = useState("");
 
   const navigate = useNavigate();
 
   const { customer, setCustomer } = useContext(UserContext);
+
+  useEffect(() => {
+    axios.get("/api/v1/user/getProfile").then((res) => {
+      console.log(res);
+      setClient(res.data.data);
+    });
+  }, [customer, setCustomer]);
+
   const { setCategory } = useContext(CategoryContext);
 
-  const user = customer.role === "customer";
-  const admin = customer.role === "admin";
+  const user = client.role === "customer";
+  const admin = client.role === "admin";
 
   const handleLogout = () => {
     axios
       .post("/api/v1/user/logout")
       .then((res) => {
-        console.log(res);
+        setCustomer("");
+        setClient("");
+        toast.success(res.data.message);
       })
       .catch((error) => {
         console.log(error.message);
       });
 
-    setCustomer("");
     setOpen(false);
 
     navigate("/login");
@@ -180,13 +191,23 @@ function Navbar() {
                     src="profilepic/profile.jpg"
                     className="h-20 rounded-full"
                   />
-                  <p className="text-2xl font-extrabold">{customer.name}</p>
-                  <p className="text-xl text-orange-700">{customer.email}</p>
+                  <p className="text-2xl font-extrabold">{client.name}</p>
+                  <p className="text-xl text-orange-700">{client.email}</p>
                 </div>
                 {user ? (
                   <>
-                    <Link to="/wishlist" className="bg-slate-400" onClick={()=>setOpen(false)}>Wishlist</Link>
-                    <Link to="/cart" className="bg-slate-400" onClick={()=>setOpen(false)}>Cart</Link>
+                    <Link
+                      to="/wishlist"
+                      className="bg-slate-400"
+                      onClick={() => setOpen(false)}>
+                      Wishlist
+                    </Link>
+                    <Link
+                      to="/cart"
+                      className="bg-slate-400"
+                      onClick={() => setOpen(false)}>
+                      Cart
+                    </Link>
                     <Link className="bg-slate-400">Orders</Link>
                   </>
                 ) : (

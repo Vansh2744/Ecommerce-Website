@@ -7,7 +7,6 @@ import { UserContext } from "../context/UserContext";
 
 
 
-
 function LoginPage() {
   const [user, setUser] = useState({
     email: "",
@@ -16,7 +15,8 @@ function LoginPage() {
 
   const navigate = useNavigate();
 
-  const {setCustomer} = useContext(UserContext);
+  const { setCustomer } = useContext(UserContext);
+
 
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -32,8 +32,8 @@ function LoginPage() {
 
       const curr = await axios.get("/api/v1/user/getProfile");
       setCustomer(curr.data.data);
-      console.log("Data :",curr);
-      
+      console.log("Data :", curr);
+
       console.log(res);
       toast.success(res.data.message);
       navigate("/");
@@ -42,7 +42,6 @@ function LoginPage() {
       console.log(error.message);
     }
   };
-
 
   return (
     <div className="mt-40 flex items-center justify-center">
