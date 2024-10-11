@@ -12,6 +12,8 @@ import ProductsPage from "./pages/ProductsPage.jsx";
 import WishlistedPage from "./pages/WishlistedPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import { CategoryContextProvider } from "./context/CategoryContextProvider.jsx";
+import CouponCreate from "./pages/CouponCreate.jsx";
+import CouponPage from "./pages/CouponPage.jsx";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/wishlist" element={<WishlistedPage />} />
             <Route path="/category" element={<CategoryPage />} />
+            <Route path="/createCoupon" element={<CouponCreate />} />
+            <Route path="/coupons" element={<CouponPage />} />
           </Routes>
           <Footer />
           <Toaster />

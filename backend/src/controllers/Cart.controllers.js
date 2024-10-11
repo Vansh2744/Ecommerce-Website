@@ -26,11 +26,9 @@ const addToCart = AsyncHandler(async (req, res) => {
 
 const updateQuantity = AsyncHandler(async (req, res) => {
   try {
-    const { productId } = req.params;
+    const { productId, quantity } = req.params;
 
     const userId = req.user.id;
-
-    const { quantity } = req.body;
 
     const user = await User.findById(userId);
 
@@ -76,14 +74,11 @@ const getCartProducts = AsyncHandler(async (req, res) => {
   try {
     const products = await Product.find({ _id: { $in: req.user.cartItems } });
 
-    console.log(products);
-    
-
     const cartItems = products.map((product) => {
       const item = req.user.cartItems.find(
         (cartItem) => cartItem.id === product.id
       );
-      
+
       return { ...product.toJSON(), quantity: item.quantity };
     });
 
@@ -122,9 +117,7 @@ const deleteCartProducts = AsyncHandler(async (req, res) => {
       throw new ApiError(400, "Cart is Empty");
     }
 
-    const newCartItems = cartItems.filter(
-      (item) => item.id !== productId
-    );
+    const newCartItems = cartItems.filter((item) => item.id !== productId);
 
     user.cartItems = newCartItems;
     await user.save();

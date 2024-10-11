@@ -1,13 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../context/UserContext";
 import { CategoryContext } from "../context/CategoryContext";
 import {toast} from 'react-hot-toast'
 
 function CategoryPage() {
   const [products, setProducts] = useState([]);
+  const [customer, setCustomer] = useState("");
 
-  const { customer } = useContext(UserContext);
   const { category } = useContext(CategoryContext);
 
   useEffect(() => {
@@ -21,6 +20,12 @@ function CategoryPage() {
       });
   }, [category,products]);
 
+  useEffect(() => {
+    axios.get("/api/v1/user/getProfile").then((res) => {
+      console.log(res);
+      setCustomer(res.data.data);
+    });
+  }, [customer, setCustomer]);
   const handleWishlistedToggle = async (id) => {
     try {
       const res = await axios.post(`/api/v1/product/toggleIsWishlisted/${id}`);

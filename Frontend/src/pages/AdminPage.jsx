@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const category = [
   "Electronics",
@@ -50,7 +51,7 @@ function AdminPage() {
           },
         }
       );
-      console.log(response);
+      toast.success(response.data.message);
     } catch (error) {
       console.log(error.message);
     }

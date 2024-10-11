@@ -10,7 +10,7 @@ import {
 const router = Router();
 
 router.route("/addToCart/:productId").post(protectRoute, addToCart);
-router.route("/updateQuantity/:productId").post(protectRoute, updateQuantity);
+router.route("/updateQuantity/:productId/:quantity").post(protectRoute, updateQuantity);
 router.route("/getCartProducts").get(protectRoute, getCartProducts);
 router.route("/deleteCartProducts/:productId").post(protectRoute, deleteCartProducts);
 

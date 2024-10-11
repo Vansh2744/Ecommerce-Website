@@ -69,7 +69,7 @@ function Navbar() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <header className="bg-gray-200 p-5 flex justify-between shadow-md shadow-slate-400 fixed top-0 w-full">
         <button>E-Commerce</button>
         <nav className="flex justify-end gap-10">
@@ -211,9 +211,13 @@ function Navbar() {
                     <Link className="bg-slate-400">Orders</Link>
                   </>
                 ) : (
-                  ""
+                  <Link className="bg-slate-400" to="/createCoupon">
+                    Create Coupons
+                  </Link>
                 )}
-                <Link className="bg-slate-400">Coupons</Link>
+                <Link className="bg-slate-400" to="/coupons">
+                  Coupons
+                </Link>
                 <button
                   className="bg-orange-400 hover:bg-orange-500"
                   onClick={handleLogout}>

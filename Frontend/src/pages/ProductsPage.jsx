@@ -1,13 +1,12 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { UserContext } from "../context/UserContext";
 import { toast } from "react-hot-toast";
 
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
+  const [customer, setCustomer] = useState("");
 
-  const { customer } = useContext(UserContext);
 
   useEffect(() => {
     axios
@@ -19,6 +18,13 @@ function ProductsPage() {
         console.log(error.message);
       });
   });
+
+  useEffect(() => {
+    axios.get("/api/v1/user/getProfile").then((res) => {
+      console.log(res);
+      setCustomer(res.data.data);
+    });
+  }, [customer, setCustomer]);
 
   const handleWishlistedToggle = async (id) => {
     try {

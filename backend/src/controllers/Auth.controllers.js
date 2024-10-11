@@ -139,27 +139,31 @@ const logout = AsyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-  
-  }
+  };
 
-  res.status(200)
-  .clearCookie("accessToken",options)
-  .clearCookie("refreshToken",options)
-  .json(new ApiResponse(200, user, "User logged out successfully"));
+  res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, user, "User logged out successfully"));
 });
 
-const getProfile = AsyncHandler(async(req,res)=>{
+const getProfile = AsyncHandler(async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select("-password -refreshToken");
+    const user = await User.findById(req.user._id).select(
+      "-password -refreshToken"
+    );
 
-    if(!user){
-      throw new ApiError(400,"Unable to get profile");
+    if (!user) {
+      throw new ApiError(400, "Unable to get profile");
     }
 
-    res.status(200).json(new ApiResponse(200,user,"Profile fetched successfully"));
+    res
+      .status(200)
+      .json(new ApiResponse(200, user, "Profile fetched successfully"));
   } catch (error) {
-    throw new ApiError(400,"Unable to get profile");
+    throw new ApiError(400, "Unable to get profile");
   }
-})
+});
 
 export { signup, login, logout, getProfile };

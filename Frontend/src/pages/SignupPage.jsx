@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Mail, Lock } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -10,6 +10,8 @@ function SignupPage() {
     email: "",
     password: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -69,7 +71,7 @@ function SignupPage() {
         </div>
         <div className="relative">
           <input
-            type="text"
+            type={`${showPassword ? "text" : "password"}`}
             name="password"
             placeholder="Password"
             value={user.password}
@@ -78,6 +80,17 @@ function SignupPage() {
             className="p-2 text-center h-10 text-lg w-96 border border-black rounded-lg focus:outline-none shadow-md focus:shadow-gray-600"
           />
           <Lock className="absolute top-2 left-2" />
+          {showPassword ? (
+            <Eye
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            />
+          ) : (
+            <EyeOff
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            />
+          )}
         </div>
         <button
           type="submit"

@@ -21,9 +21,6 @@ const userSchema = new Schema(
       required: true,
       trim: true,
     },
-    avatar: {
-      type: String,
-    },
     cartItems: [
       {
         quantity: {
