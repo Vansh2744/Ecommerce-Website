@@ -33,16 +33,5 @@ const protectRoute = async (req, res, next) => {
   }
 };
 
-const isAdmin = async (req, _, next) => {
-  try {
-    if (req.user && req.user.role === "admin") {
-      next();
-    } else {
-      throw new ApiError(400, "Unauthorized Admin");
-    }
-  } catch (error) {
-    throw new ApiError(400, "Unauthorized Admin");
-  }
-};
 
-export { protectRoute, isAdmin };
+export { protectRoute };

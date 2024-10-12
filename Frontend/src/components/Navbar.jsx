@@ -71,7 +71,9 @@ function Navbar() {
   return (
     <div className="relative z-10">
       <header className="bg-gray-200 p-5 flex justify-between shadow-md shadow-slate-400 fixed top-0 w-full">
-        <button>E-Commerce</button>
+        <button>
+          <img src="/logo.jpg" alt="logo" className="w-10 rounded-full shadow-sm shadow-black" />
+        </button>
         <nav className="flex justify-end gap-10">
           <Link to="/">
             <button className="flex flex-col justify-center items-center hover:text-orange-600 font-bold">

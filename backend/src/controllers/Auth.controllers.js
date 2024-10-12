@@ -31,7 +31,7 @@ const setCookies = (res, accessToken, refreshToken) => {
     res.cookie("accessToken", accessToken, options);
     res.cookie("refreshToken", refreshToken, options);
   } catch (error) {
-    throw new ApiError(400, "Unable to set Cooies");
+    throw new ApiError(400, "Unable to set Cookies");
   }
 };
 

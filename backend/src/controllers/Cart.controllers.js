@@ -44,26 +44,13 @@ const updateQuantity = AsyncHandler(async (req, res) => {
       res.status(401).json(new ApiResponse(401, "Product not found in cart"));
     }
 
-    if (quantity === 0) {
-      const cartItems = user.cartItems.filter(
-        (item) => item._id.toString() !== productId
+    cartItem.quantity = quantity;
+    await user.save();
+    res
+      .status(200)
+      .json(
+        new ApiResponse(200, user.cartItems, "Quantity updated successfully")
       );
-      user.cartItems = cartItems;
-      await user.save();
-      res
-        .status(200)
-        .json(
-          new ApiResponse(200, user.cartItems, "Product removed from cart")
-        );
-    } else {
-      cartItem.quantity = quantity;
-      await user.save();
-      res
-        .status(200)
-        .json(
-          new ApiResponse(200, user.cartItems, "Quantity updated successfully")
-        );
-    }
   } catch (error) {
     console.log(error.message);
     throw new ApiError(400, "Unable to update quantity");
