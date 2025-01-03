@@ -10,7 +10,7 @@ app.use(cookieParser());
 app.use(express.static("public"));
 app.use(cors(
     {
-        origin: "http://localhost:3000",
+        origin: "https://ecommerce-frontend-theta-eight.vercel.app/",
         methods: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
     }
