@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-        "/api": "http://localhost:3000",
+        "/api": "https://ecommerce-website-three-umber-53.vercel.app/",
     },
   },
 });
