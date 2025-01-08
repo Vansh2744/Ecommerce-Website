@@ -6,7 +6,7 @@ function WishlistedPage() {
 
   useEffect(() => {
     axios
-      .get("/api/v1/product/getWishlistedProducts")
+      .get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/getWishlistedProducts`)
       .then((res) => {
         setProducts(res.data.data);
       })
@@ -17,7 +17,7 @@ function WishlistedPage() {
 
   const handleWishlistedToggle = async (id) => {
     try {
-      const res = await axios.post(`/api/v1/product/toggleIsWishlisted/${id}`);
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/toggleIsWishlisted/${id}`);
       console.log(res);
     } catch (error) {
       console.log(error.message);

@@ -11,7 +11,7 @@ function CouponPage() {
 
   useEffect(() => {
     axios
-      .get("/api/v1/coupon/getCoupons")
+      .get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/coupon/getCoupons`)
       .then((res) => {
         console.log(res);
         setCoupons(res.data.data);
@@ -22,7 +22,7 @@ function CouponPage() {
   }, [setCoupons]);
 
    useEffect(() => {
-     axios.get("/api/v1/user/getProfile").then((res) => {
+     axios.get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/getProfile`).then((res) => {
        console.log(res);
        setUser(res.data.data);
      });

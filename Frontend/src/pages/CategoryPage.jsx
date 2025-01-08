@@ -11,7 +11,7 @@ function CategoryPage() {
 
   useEffect(() => {
     axios
-      .get(`/api/v1/product/getProductByCategory/${category}`)
+      .get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/getProductByCategory/${category}`)
       .then((res) => {
         setProducts(res.data.data);
       })
@@ -21,14 +21,14 @@ function CategoryPage() {
   }, [category,products]);
 
   useEffect(() => {
-    axios.get("/api/v1/user/getProfile").then((res) => {
+    axios.get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/getProfile`).then((res) => {
       console.log(res);
       setCustomer(res.data.data);
     });
   }, [customer, setCustomer]);
   const handleWishlistedToggle = async (id) => {
     try {
-      const res = await axios.post(`/api/v1/product/toggleIsWishlisted/${id}`);
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/toggleIsWishlisted/${id}`);
       console.log(res);
     } catch (error) {
       console.log(error.message);
@@ -37,7 +37,7 @@ function CategoryPage() {
 
   const handleAddToCart = async (id) => {
     try {
-      const res = await axios.post(`/api/v1/cart//addToCart/${id}`);
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/cart//addToCart/${id}`);
       toast.success(res.data.message);
       console.log(res);
     } catch (error) {

@@ -28,10 +28,10 @@ function HomePage() {
   return (
     <>
       <div className="grid grid-cols-3 gap-8 m-16 mt-40">
-        {categories.map((image) => {
+        {categories.map((image,index) => {
           return (
             <>
-              <div key={image} className="shadow-lg shadow-gray-800">
+              <div key={index} className="shadow-lg shadow-gray-800">
                 <Link to="/products">
                   <img src={image} className="h-96 w-full" />
                 </Link>
@@ -53,10 +53,10 @@ function HomePage() {
       {/* ------------------------------------------------------------------- */}
 
       <div className="flex mr-20 ml-20 gap-10 mt-32">
-        {cargos.map((cargo) => {
+        {cargos.map((cargo,index) => {
           return (
             <>
-              <div key={cargo} className="w-60 h-80 rounded-2xl shadow-md shadow-gray-700">
+              <div key={index} className="w-60 h-80 rounded-2xl shadow-md shadow-gray-700">
                 <Link to="/products">
                   <img src={cargo} className="w-full h-full rounded-2xl" />
                 </Link>
@@ -67,10 +67,10 @@ function HomePage() {
       </div>
 
       <div className="flex mr-20 ml-20 gap-10 mt-10 mb-10">
-        {shoes.map((shoe) => {
+        {shoes.map((shoe,index) => {
           return (
             <>
-              <div key={shoe} className="w-60 h-80 rounded-2xl shadow-md shadow-gray-700">
+              <div key={index} className="w-60 h-80 rounded-2xl shadow-md shadow-gray-700">
                 <Link to="/products">
                   <img src={shoe} className="w-full h-full rounded-2xl" />
                 </Link>

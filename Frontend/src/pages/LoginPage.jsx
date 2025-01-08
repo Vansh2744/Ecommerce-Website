@@ -27,12 +27,12 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const res = await axios.post("/api/v1/user/login", {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/login`, {
         email: user.email,
         password: user.password,
       });
 
-      const curr = await axios.get("/api/v1/user/getProfile");
+      const curr = await axios.get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/getProfile`);
       setCustomer(curr.data.data);
       console.log("Data :", curr);
 

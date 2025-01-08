@@ -17,7 +17,7 @@ function CouponCreate() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const res = await axios.post("/api/v1/coupon/createCoupon", coupon);
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/coupon/createCoupon`, coupon);
 
       console.log(res);
     } catch (error) {

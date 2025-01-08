@@ -36,7 +36,7 @@ function AdminPage() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "/api/v1/product/createProducts",
+        `${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/createProducts`,
         {
           name: product.name,
           description: product.description,

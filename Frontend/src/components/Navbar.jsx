@@ -25,7 +25,7 @@ function Navbar() {
   const { customer, setCustomer } = useContext(UserContext);
 
   useEffect(() => {
-    axios.get("/api/v1/user/getProfile").then((res) => {
+    axios.get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/getProfile`).then((res) => {
       console.log(res);
       setClient(res.data.data);
     });

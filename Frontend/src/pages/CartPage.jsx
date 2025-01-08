@@ -16,7 +16,7 @@ function CartPage() {
       )
     );
     axios
-      .post(`/api/v1/cart/updateQuantity/${id}/${1}`)
+      .post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/cart/updateQuantity/${id}/${1}`)
       .then((res) => {
         console.log(res);
       })
@@ -34,7 +34,7 @@ function CartPage() {
       )
     );
     axios
-      .post(`/api/v1/cart/updateQuantity/${id}/${1}`)
+      .post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/cart/updateQuantity/${id}/${1}`)
       .then((res) => {
         console.log(res);
       })
@@ -45,7 +45,7 @@ function CartPage() {
 
   const handleRemoveCart = async (id) => {
     try {
-      const res = await axios.post(`/api/v1/cart/deleteCartProducts/${id}`);
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/cart/deleteCartProducts/${id}`);
       console.log(res);
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product._id !== id)
@@ -57,7 +57,7 @@ function CartPage() {
 
   useEffect(() => {
     axios
-      .get("/api/v1/cart/getCartProducts")
+      .get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/cart/getCartProducts`)
       .then((res) => {
         setProducts(res.data.data);
       })

@@ -23,11 +23,7 @@ function SignupPage() {
     try {
       e.preventDefault();
 
-      const res = await axios.post("/api/v1/user/signup",{
-        name: user.name,
-        email: user.email,
-        password: user.password
-      });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/signup`,user);
       console.log(res);
       toast.success(res.data.message);
       navigate("/login");
