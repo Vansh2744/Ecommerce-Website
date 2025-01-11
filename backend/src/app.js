@@ -10,7 +10,7 @@ app.use(cookieParser());
 app.use(express.static("public"));
 app.use(
   cors({
-    origin: "https://frontendecom-two.vercel.app",
+    origin: "https://subtle-narwhal-e17b8c.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
