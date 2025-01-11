@@ -86,8 +86,8 @@ const login = AsyncHandler(async (req, res) => {
   
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // HTTPS in production
-    sameSite: "strict", // Prevent CSRF
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
   };
   
   res.cookie("accessToken", accessToken, options);
