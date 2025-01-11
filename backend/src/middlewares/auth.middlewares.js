@@ -1,36 +1,27 @@
-import ApiError from "../utils/ApiError.js";
 import { User } from "../models/users.models.js";
 import jwt from "jsonwebtoken";
 
 const protectRoute = async (req, res, next) => {
   try {
-    const accessToken = req.cookies.accessToken;
+    const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
 
-    if (!accessToken) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized - No access token provided" });
+    if (!token) {
+        return res.status(401).json({ message: "Invalid Access Token" });
     }
 
-    const decodedToken = jwt.verify(
-      accessToken,
-      process.env.ACCESS_TOKEN_SECRET
-    );
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
 
-    const user = await User.findById(decodedToken.userId);
+    const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
 
     if (!user) {
-      throw new ApiError(400, "User not found using the token");
+        return res.status(401).json({ message: "User not found" });
     }
 
     req.user = user;
-
-    next();
-  } catch (error) {
-    console.log(error.message);
-
-    throw new ApiError(400, "Invalid token");
-  }
+    next()
+} catch (error) {
+    return res.status(401).json({ message: "Unauthorized User" });
+}
 };
 
 

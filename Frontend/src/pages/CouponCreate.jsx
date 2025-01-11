@@ -17,7 +17,7 @@ function CouponCreate() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/coupon/createCoupon`, coupon);
+      const res = await axios.post(`/api/v1/coupon/createCoupon`, coupon);
 
       console.log(res);
     } catch (error) {
@@ -29,7 +29,8 @@ function CouponCreate() {
     <div className="flex items-center pl-10 pr-10">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-10 text-center bg-slate-500 p-20 w-full rounded-xl">
+        className="flex flex-col gap-10 text-center bg-slate-500 p-20 w-full rounded-xl"
+      >
         <div>
           <span className="text-xl font-bold">Coupon Code : </span>
           <input
@@ -66,7 +67,8 @@ function CouponCreate() {
         <span className="text-xl font-bold">(Date = YYYY-MM-DD)</span>
         <button
           type="submit"
-          className="bg-orange-600 w-60 m-auto p-2 mt-5 rounded-lg font-bold hover:bg-orange-500">
+          className="bg-orange-600 w-60 m-auto p-2 mt-5 rounded-lg font-bold hover:bg-orange-500"
+        >
           Submit
         </button>
       </form>

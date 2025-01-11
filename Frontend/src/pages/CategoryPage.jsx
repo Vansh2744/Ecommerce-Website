@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { CategoryContext } from "../context/CategoryContext";
-import {toast} from 'react-hot-toast'
+import { toast } from "react-hot-toast";
 
 function CategoryPage() {
   const [products, setProducts] = useState([]);
@@ -11,24 +11,24 @@ function CategoryPage() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/getProductByCategory/${category}`)
+      .get(`/api/v1/product/getProductByCategory/${category}`)
       .then((res) => {
         setProducts(res.data.data);
       })
       .catch((error) => {
         console.log(error.message);
       });
-  }, [category,products]);
+  }, [category, products]);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/getProfile`).then((res) => {
+    axios.get(`/api/v1/user/getProfile`).then((res) => {
       console.log(res);
       setCustomer(res.data.data);
     });
   }, [customer, setCustomer]);
   const handleWishlistedToggle = async (id) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/toggleIsWishlisted/${id}`);
+      const res = await axios.post(`/api/v1/product/toggleIsWishlisted/${id}`);
       console.log(res);
     } catch (error) {
       console.log(error.message);
@@ -37,7 +37,7 @@ function CategoryPage() {
 
   const handleAddToCart = async (id) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/cart//addToCart/${id}`);
+      const res = await axios.post(`/api/v1/cart//addToCart/${id}`);
       toast.success(res.data.message);
       console.log(res);
     } catch (error) {
@@ -51,7 +51,8 @@ function CategoryPage() {
         return (
           <div
             key={index}
-            className="flex flex-col gap-3 border-lg w-full h-full shadow-lg shadow-gray-400">
+            className="flex flex-col gap-3 border-lg w-full h-full shadow-lg shadow-gray-400"
+          >
             <img src={product.image} className="w-full h-56" />
             <div className="p-4 flex flex-col text-center">
               <h1 className="text-xl font-bold mb-2">{product.name}</h1>
@@ -71,12 +72,14 @@ function CategoryPage() {
                         ? "bg-orange-600 hover:bg-orange-500"
                         : "bg-slate-600 hover:bg-slate-500"
                     } mt-4 text-white p-1 pl-3 pr-3 shadow-md shadow-gray-600`}
-                    onClick={() => handleWishlistedToggle(product._id)}>
+                    onClick={() => handleWishlistedToggle(product._id)}
+                  >
                     {`${product.isWishlisted ? "Wishlisted" : "Wishlist"}`}
                   </button>
                   <button
                     className="bg-yellow-600 hover:bg-yellow-500 mt-4 text-white p-1 pl-3 pr-3 shadow-md shadow-gray-600"
-                    onClick={() => handleAddToCart(product._id)}>
+                    onClick={() => handleAddToCart(product._id)}
+                  >
                     Add To Cart
                   </button>
                 </>

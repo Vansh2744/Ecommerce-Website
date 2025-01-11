@@ -5,8 +5,6 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { UserContext } from "../context/UserContext";
 
-
-
 function LoginPage() {
   const [user, setUser] = useState({
     email: "",
@@ -19,7 +17,6 @@ function LoginPage() {
 
   const { setCustomer } = useContext(UserContext);
 
-
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -27,12 +24,9 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/login`, {
-        email: user.email,
-        password: user.password,
-      });
+      const res = await axios.post(`/api/v1/user/login`, user);
 
-      const curr = await axios.get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/getProfile`);
+      const curr = await axios.get(`/api/v1/user/getProfile`);
       setCustomer(curr.data.data);
       console.log("Data :", curr);
 
@@ -49,7 +43,8 @@ function LoginPage() {
     <div className="mt-40 flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-300 flex flex-col gap-5 p-20 items-center shadow-lg shadow-gray-700">
+        className="bg-gray-300 flex flex-col gap-5 p-20 items-center shadow-lg shadow-gray-700"
+      >
         <div className="relative">
           <input
             type="text"
@@ -87,7 +82,8 @@ function LoginPage() {
         </div>
         <button
           type="submit"
-          className="bg-orange-600 p-1 w-40 rounded-lg font-semibold text-lg mt-10 hover:bg-orange-500 hover:ring-2">
+          className="bg-orange-600 p-1 w-40 rounded-lg font-semibold text-lg mt-10 hover:bg-orange-500 hover:ring-2"
+        >
           Login
         </button>
 

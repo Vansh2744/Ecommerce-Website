@@ -23,7 +23,7 @@ function SignupPage() {
     try {
       e.preventDefault();
 
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/signup`,user);
+      const res = await axios.post(`/api/v1/user/signup`, user);
       console.log(res);
       toast.success(res.data.message);
       navigate("/login");
@@ -37,7 +37,8 @@ function SignupPage() {
     <div className="mt-40 flex flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-300 flex flex-col gap-5 pt-10 p-20 items-center shadow-lg shadow-gray-700">
+        className="bg-gray-300 flex flex-col gap-5 pt-10 p-20 items-center shadow-lg shadow-gray-700"
+      >
         <h2 className="text-orange-600 font-bold text-2xl">
           Create Your Account
         </h2>
@@ -90,7 +91,8 @@ function SignupPage() {
         </div>
         <button
           type="submit"
-          className="bg-orange-600 p-1 w-40 rounded-lg font-semibold text-lg mt-10 hover:bg-orange-500 hover:ring-2">
+          className="bg-orange-600 p-1 w-40 rounded-lg font-semibold text-lg mt-10 hover:bg-orange-500 hover:ring-2"
+        >
           Signup
         </button>
 

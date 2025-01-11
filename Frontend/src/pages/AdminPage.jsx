@@ -11,7 +11,8 @@ const category = [
   "Books",
   "Toys",
   "Sports",
-  "Health",]
+  "Health",
+];
 
 function AdminPage() {
   const [product, setProduct] = useState({
@@ -22,7 +23,7 @@ function AdminPage() {
     category: "",
   });
 
-  const [image, setImage] = useState(null); 
+  const [image, setImage] = useState(null);
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]); // Handle file input separately
@@ -36,7 +37,7 @@ function AdminPage() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/createProducts`,
+        `/api/v1/product/createProducts`,
         {
           name: product.name,
           description: product.description,
@@ -61,7 +62,8 @@ function AdminPage() {
     <div className="flex flex-col items-center justify-center">
       <form
         className="flex flex-col gap-10 bg-slate-400 p-20 w-4/5 shadow-2xl shadow-gray-900"
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+      >
         <div className="flex flex-col gap-5 text-xl">
           <label htmlFor="image">Upload Image : </label>
           <input
@@ -89,7 +91,8 @@ function AdminPage() {
             placeholder="Description"
             value={product.description}
             onChange={handleChange}
-            className="w-3/4 p-2 text-lg text-center placeholder-orange-400 border-2 border-orange-600 focus:outline-none"></textarea>
+            className="w-3/4 p-2 text-lg text-center placeholder-orange-400 border-2 border-orange-600 focus:outline-none"
+          ></textarea>
         </div>
         <div className="flex flex-col gap-5 text-xl">
           <label htmlFor="price">Price : </label>
@@ -127,7 +130,8 @@ function AdminPage() {
         <div className="w-full text-center">
           <button
             className="w-80 bg-orange-700 pl-4 pr-4 p-2 hover:bg-orange-600"
-            type="submit">
+            type="submit"
+          >
             Add Product
           </button>
         </div>

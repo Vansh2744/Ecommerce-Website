@@ -11,7 +11,7 @@ function CouponPage() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/coupon/getCoupons`)
+      .get(`/api/v1/coupon/getCoupons`)
       .then((res) => {
         console.log(res);
         setCoupons(res.data.data);
@@ -21,18 +21,17 @@ function CouponPage() {
       });
   }, [setCoupons]);
 
-   useEffect(() => {
-     axios.get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/getProfile`).then((res) => {
-       console.log(res);
-       setUser(res.data.data);
-     });
-   }, []);
+  useEffect(() => {
+    axios.get(`/api/v1/user/getProfile`).then((res) => {
+      console.log(res);
+      setUser(res.data.data);
+    });
+  }, []);
 
-   const handleRedeem = () => {
-     toast.success("Coupon redeemed successfully");
-     navigate("/cart");
-   };
-
+  const handleRedeem = () => {
+    toast.success("Coupon redeemed successfully");
+    navigate("/cart");
+  };
 
   return (
     <div className="flex flex-col gap-10">
@@ -50,7 +49,8 @@ function CouponPage() {
               {user.role === "customer" && (
                 <button
                   className="bg-amber-600 p-2 w-56 mt-6 hover:bg-amber-500"
-                  onClick={handleRedeem}>
+                  onClick={handleRedeem}
+                >
                   Redeem
                 </button>
               )}

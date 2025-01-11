@@ -6,7 +6,7 @@ function WishlistedPage() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/getWishlistedProducts`)
+      .get(`/api/v1/product/getWishlistedProducts`)
       .then((res) => {
         setProducts(res.data.data);
       })
@@ -17,7 +17,7 @@ function WishlistedPage() {
 
   const handleWishlistedToggle = async (id) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/product/toggleIsWishlisted/${id}`);
+      const res = await axios.post(`/api/v1/product/toggleIsWishlisted/${id}`);
       console.log(res);
     } catch (error) {
       console.log(error.message);
@@ -30,7 +30,8 @@ function WishlistedPage() {
         return (
           <div
             key={index}
-            className="flex flex-col gap-3 border-lg w-full h-full shadow-lg shadow-gray-400">
+            className="flex flex-col gap-3 border-lg w-full h-full shadow-lg shadow-gray-400"
+          >
             <img src={product.image} className="w-full h-56" />
             <div className="pb-4 text-center">
               <h1 className="text-xl font-bold mb-2">{product.name}</h1>
@@ -45,7 +46,8 @@ function WishlistedPage() {
             </div>
             <button
               className="m-3 mt-4 text-white p-1 pl-3 pr-3 shadow-md shadow-gray-600 bg-slate-600"
-              onClick={() => handleWishlistedToggle(product._id)}>
+              onClick={() => handleWishlistedToggle(product._id)}
+            >
               Remove
             </button>
           </div>

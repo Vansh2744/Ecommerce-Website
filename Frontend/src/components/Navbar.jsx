@@ -10,225 +10,200 @@ import {
   LogIn,
   Logs,
 } from "lucide-react";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { UserContext } from "../context/UserContext";
 import { CategoryContext } from "../context/CategoryContext";
-import { toast } from "react-hot-toast";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
-  const [client, setClient] = useState("");
+  const [client, setClient] = useState(null);
 
   const navigate = useNavigate();
-
   const { customer, setCustomer } = useContext(UserContext);
-
-  useEffect(() => {
-    axios.get(`${import.meta.env.VITE_BACKEND_PORT}/api/v1/user/getProfile`).then((res) => {
-      console.log(res);
-      setClient(res.data.data);
-    });
-  }, [customer, setCustomer]);
-
   const { setCategory } = useContext(CategoryContext);
 
-  const user = client.role === "customer";
-  const admin = client.role === "admin";
+  useEffect(() => {
+    axios
+      .get(`/api/v1/user/getProfile`)
+      .then((res) => setClient(res.data.data))
+      .catch((error) => console.error("Error fetching profile:", error));
+  }, [customer]);
 
   const handleLogout = () => {
     axios
       .post("/api/v1/user/logout")
       .then((res) => {
-        setCustomer("");
-        setClient("");
+        setCustomer(null);
+        setClient(null);
         toast.success(res.data.message);
+        navigate("/login");
       })
-      .catch((error) => {
-        console.log(error.message);
-      });
-
+      .catch((error) => toast.error("Logout failed!"));
     setOpen(false);
-
-    navigate("/login");
   };
 
-  const handleFashionToggle = () => {
-    setCategory("Fashion");
+  const handleCategoryChange = (category) => {
+    setCategory(category);
     setOpenCat(false);
   };
 
-  const handleSportsToggle = () => {
-    setCategory("Sports");
-    setOpenCat(false);
-  };
-
-  const handleElectronicsToggle = () => {
-    setCategory("Electronics");
-    setOpenCat(false);
-  };
+  const isUser = client?.role === "customer";
+  const isAdmin = client?.role === "admin";
 
   return (
     <div className="relative z-10">
-      <header className="bg-gray-200 p-5 flex justify-between shadow-md shadow-slate-400 fixed top-0 w-full">
-        <button>
-          <img src="/logo.jpg" alt="logo" className="w-10 rounded-full shadow-sm shadow-black" />
-        </button>
-        <nav className="flex justify-end gap-10">
-          <Link to="/">
-            <button className="flex flex-col justify-center items-center hover:text-orange-600 font-bold">
-              <House />
-              <span>Home</span>
-            </button>
+      <header className="bg-gray-200 p-5 flex justify-between shadow-md fixed top-0 w-full">
+        <Link to="/">
+          <img
+            src="/logo.jpg"
+            alt="logo"
+            className="w-10 rounded-full shadow-sm"
+          />
+        </Link>
+
+        <nav className="flex gap-10">
+          {/* Home Link */}
+          <Link to="/" className="nav-item">
+            <House />
+            <span>Home</span>
           </Link>
-          <Link to="/products">
-            <button className="flex flex-col justify-center items-center hover:text-orange-600 font-bold">
-              <Package />
-              <span>Go To Products</span>
-            </button>
+
+          {/* Products Link */}
+          <Link to="/products" className="nav-item">
+            <Package />
+            <span>Products</span>
           </Link>
-          <button
-            className="flex flex-col justify-center items-center hover:text-orange-600 font-bold"
+
+          {/* Categories */}
+          <div
+            className="relative"
             onMouseEnter={() => setOpenCat(true)}
-            onMouseLeave={() => setOpenCat(false)}>
-            <Logs />
-            <span>Categories</span>
-          </button>
-
-          {openCat ? (
-            <>
-              <div
-                className="absolute top-[70px] right-52 flex flex-col w-60 bg-slate-500 gap-1 p-1"
-                onMouseEnter={() => setOpenCat(true)}
-                onMouseLeave={() => setOpenCat(false)}>
-                <>
-                  <Link
-                    to="/category"
-                    className="bg-slate-400"
-                    onClick={handleFashionToggle}>
-                    Fashion
-                  </Link>
-                  <Link
-                    to="/category"
-                    className="bg-slate-400"
-                    onClick={handleSportsToggle}>
-                    Sports
-                  </Link>
-                  <Link
-                    to="/category"
-                    className="bg-slate-400"
-                    onClick={handleElectronicsToggle}>
-                    Electronics
-                  </Link>
-                </>
+            onMouseLeave={() => setOpenCat(false)}
+          >
+            <button className="nav-item">
+              <Logs />
+              <span>Categories</span>
+            </button>
+            {openCat && (
+              <div className="absolute top-10 right-0 bg-slate-500 text-white rounded shadow-lg">
+                <Link
+                  to="/category"
+                  className="dropdown-item"
+                  onClick={() => handleCategoryChange("Fashion")}
+                >
+                  Fashion
+                </Link>
+                <Link
+                  to="/category"
+                  className="dropdown-item"
+                  onClick={() => handleCategoryChange("Sports")}
+                >
+                  Sports
+                </Link>
+                <Link
+                  to="/category"
+                  className="dropdown-item"
+                  onClick={() => handleCategoryChange("Electronics")}
+                >
+                  Electronics
+                </Link>
               </div>
-            </>
-          ) : (
-            ""
-          )}
+            )}
+          </div>
 
-          {user && (
+          {/* User Links */}
+          {isUser && (
             <>
-              <Link to="/cart">
-                <button className="flex flex-col justify-center items-center hover:text-orange-600 font-bold">
-                  <ShoppingCart />
-                  <span>Cart</span>
-                </button>
+              <Link to="/cart" className="nav-item">
+                <ShoppingCart />
+                <span>Cart</span>
               </Link>
-
-              <Link to="/wishlist">
-                <button className="flex flex-col justify-center items-center hover:text-orange-600 font-bold">
-                  <Heart />
-                  <span>Wishlist</span>
-                </button>
+              <Link to="/wishlist" className="nav-item">
+                <Heart />
+                <span>Wishlist</span>
               </Link>
             </>
           )}
 
-          {admin && (
-            <>
-              <Link to="/addProducts">
-                <button className="flex flex-col justify-center items-center hover:text-orange-600 font-bold">
-                  <Package />
-                  <span>Add Products</span>
-                </button>
-              </Link>
-            </>
+          {/* Admin Links */}
+          {isAdmin && (
+            <Link to="/addProducts" className="nav-item">
+              <Package />
+              <span>Add Products</span>
+            </Link>
           )}
 
-          {user || admin ? (
-            <>
-              <button
-                className="flex flex-col justify-center items-center hover:text-orange-600 font-bold"
-                onMouseEnter={() => setOpen(true)}
-                onMouseLeave={() => setOpen(false)}>
+          {/* Profile / Auth */}
+          {isUser || isAdmin ? (
+            <div
+              className="relative"
+              onMouseEnter={() => setOpen(true)}
+              onMouseLeave={() => setOpen(false)}
+            >
+              <button className="nav-item">
                 <UserPen />
                 <span>Profile</span>
               </button>
-            </>
+              {open && client && (
+                <div className="absolute top-10 right-0 bg-slate-500 text-white rounded shadow-lg w-60">
+                  <div className="flex flex-col items-center gap-2 py-4">
+                    <img
+                      src="/profilepic/profile.jpg"
+                      alt="Profile"
+                      className="w-16 h-16 rounded-full"
+                    />
+                    <p className="text-lg font-bold">{client.name}</p>
+                    <p className="text-sm text-orange-400">{client.email}</p>
+                  </div>
+                  {isUser && (
+                    <>
+                      <Link
+                        to="/wishlist"
+                        className="dropdown-item"
+                        onClick={() => setOpen(false)}
+                      >
+                        Wishlist
+                      </Link>
+                      <Link
+                        to="/cart"
+                        className="dropdown-item"
+                        onClick={() => setOpen(false)}
+                      >
+                        Cart
+                      </Link>
+                      <Link to="/orders" className="dropdown-item">
+                        Orders
+                      </Link>
+                    </>
+                  )}
+                  {isAdmin && (
+                    <Link to="/createCoupon" className="dropdown-item">
+                      Create Coupons
+                    </Link>
+                  )}
+                  <Link to="/coupons" className="dropdown-item">
+                    Coupons
+                  </Link>
+                  <button
+                    className="bg-orange-400 hover:bg-orange-500 w-full py-2"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
-              <Link
-                to={"/signup"}
-                className="flex flex-col justify-center items-center hover:text-orange-600 font-bold bg-slate-400 h-12 w-40 rounded-lg">
+              <Link to="/signup" className="auth-button">
                 Signup
               </Link>
-              <Link
-                to={"/login"}
-                className="flex flex-col justify-center items-center hover:text-orange-600 font-bold">
+              <Link to="/login" className="auth-button">
                 <LogIn />
                 <span>Login</span>
               </Link>
             </>
-          )}
-
-          {open ? (
-            <>
-              <div
-                className="absolute top-[70px] right-0 flex flex-col w-60 bg-slate-500 gap-1 p-1"
-                onMouseEnter={() => setOpen(true)}
-                onMouseLeave={() => setOpen(false)}>
-                <div className="flex flex-col justify-center items-center gap-2 mb-8 mt-4">
-                  <img
-                    src="profilepic/profile.jpg"
-                    className="h-20 rounded-full"
-                  />
-                  <p className="text-2xl font-extrabold">{client.name}</p>
-                  <p className="text-xl text-orange-700">{client.email}</p>
-                </div>
-                {user ? (
-                  <>
-                    <Link
-                      to="/wishlist"
-                      className="bg-slate-400"
-                      onClick={() => setOpen(false)}>
-                      Wishlist
-                    </Link>
-                    <Link
-                      to="/cart"
-                      className="bg-slate-400"
-                      onClick={() => setOpen(false)}>
-                      Cart
-                    </Link>
-                    <Link className="bg-slate-400">Orders</Link>
-                  </>
-                ) : (
-                  <Link className="bg-slate-400" to="/createCoupon">
-                    Create Coupons
-                  </Link>
-                )}
-                <Link className="bg-slate-400" to="/coupons">
-                  Coupons
-                </Link>
-                <button
-                  className="bg-orange-400 hover:bg-orange-500"
-                  onClick={handleLogout}>
-                  Logout
-                </button>
-              </div>
-            </>
-          ) : (
-            ""
           )}
         </nav>
       </header>
